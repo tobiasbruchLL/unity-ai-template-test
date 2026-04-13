@@ -51,6 +51,7 @@ Project-specific docs live in `docs/`. Consult relevant files there before worki
 ## Workflow
 
 - After making code edits, always run `mcp__ide__getDiagnostics` to check for compiler errors before reporting a task as complete
+- After completing a task, reflect on areas where you struggled (e.g. unexpected API behavior, incorrect assumptions, non-obvious patterns). If there were meaningful struggles, document the learnings in `docs/` so future work can benefit. Skip this if the task was straightforward.
 
 ## Coding Conventions
 
