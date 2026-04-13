@@ -1,9 +1,12 @@
 using System;
 using R3;
+using VContainer;
 using VContainer.Unity;
 using UnityEngine.UIElements;
+using BreakInfinity;
+using LL.Common;
+using LL.Core.Inventory;
 using LL.Core.Shop;
-using VContainer;
 
 namespace LL.Presentation.Shop
 {
@@ -11,35 +14,86 @@ namespace LL.Presentation.Shop
     {
         private readonly ShopState           _state;
         private readonly ShopView            _view;
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly Inventory           _inventory;
+        private readonly IIAPService         _iapService;
+        private readonly CompositeDisposable _disposables = new();
 
-        private Action _onFeatured;
-        private Action _onCurrency;
-        private Action _onBundles;
-        private Action _onOffers;
+        // Product ID list aligned to BtnGemPacks indices
+        private static readonly string[] GemProductIds =
+        {
+            IAPProductIds.Gems100,
+            IAPProductIds.Gems500,
+            IAPProductIds.Gems1000,
+            IAPProductIds.Gems2500,
+            IAPProductIds.Gems5000,
+            IAPProductIds.Gems10000,
+        };
 
         [Inject]
-        public ShopPresenter(ShopState state, ShopView view)
+        public ShopPresenter(ShopState state, ShopView view, Inventory inventory, IIAPService iapService)
         {
-            _state = state;
-            _view = view;
+            _state      = state;
+            _view       = view;
+            _inventory  = inventory;
+            _iapService = iapService;
         }
 
         public void Start()
         {
-            _onFeatured = () => _state.SelectedCategory.Value = ShopCategory.Featured;
-            _onCurrency = () => _state.SelectedCategory.Value = ShopCategory.Currency;
-            _onBundles  = () => _state.SelectedCategory.Value = ShopCategory.Bundles;
-            _onOffers   = () => _state.SelectedCategory.Value = ShopCategory.Offers;
+            _iapService.Initialize();
 
-            _view.BtnFeatured.clicked += _onFeatured;
-            _view.BtnCurrency.clicked += _onCurrency;
-            _view.BtnBundles.clicked  += _onBundles;
-            _view.BtnOffers.clicked   += _onOffers;
+            // ── Category tabs ─────────────────────────────────────────────────
+            _view.BtnFeatured.OnClickedAsObservable()
+                .Subscribe(_ => _state.SelectedCategory.Value = ShopCategory.Featured).AddTo(_disposables);
+            _view.BtnCurrency.OnClickedAsObservable()
+                .Subscribe(_ => _state.SelectedCategory.Value = ShopCategory.Currency).AddTo(_disposables);
+            _view.BtnBundles.OnClickedAsObservable()
+                .Subscribe(_ => _state.SelectedCategory.Value = ShopCategory.Bundles).AddTo(_disposables);
+            _view.BtnOffers.OnClickedAsObservable()
+                .Subscribe(_ => _state.SelectedCategory.Value = ShopCategory.Offers).AddTo(_disposables);
 
-            // Fires immediately with ShopCategory.Featured, setting correct initial UI state
             _state.SelectedCategory.Subscribe(OnCategoryChanged).AddTo(_disposables);
+
+            // ── Gem pack IAP buttons ──────────────────────────────────────────
+            for (var i = 0; i < GemProductIds.Length; i++)
+            {
+                var productId = GemProductIds[i];
+                _view.BtnGemPacks[i].OnClickedAsObservable()
+                    .Subscribe(_ => _iapService.BuyProduct(productId)).AddTo(_disposables);
+            }
+
+            // ── Coin pack buttons (spend gems) ────────────────────────────────
+            for (var i = 0; i < CoinPackCatalog.Packs.Length; i++)
+            {
+                var pack = CoinPackCatalog.Packs[i];
+
+                _view.BtnCoinPacks[i].OnClickedAsObservable()
+                    .Subscribe(_ =>
+                    {
+                        var cost = new InventoryItem(InventoryIds.Gems, new BigDouble(pack.GemCost));
+                        if (!_inventory.TrySpend(cost)) return;
+                        _inventory.Add(new InventoryItem(InventoryIds.Coins, new BigDouble(pack.Coins)));
+                    }).AddTo(_disposables);
+
+                // Grey out the button reactively whenever the player can't afford it
+                var btn = _view.BtnCoinPacks[i];
+                _inventory
+                    .CanSpend(new InventoryItem(InventoryIds.Gems, new BigDouble(pack.GemCost)))
+                    .Subscribe(canAfford => btn.SetEnabled(canAfford))
+                    .AddTo(_disposables);
+            }
+
+            // ── HUD currency labels ───────────────────────────────────────────
+            _inventory.GetAmount(InventoryIds.Gems)
+                .Subscribe(v => _view.LabelGems.text = FormatAmount(v))
+                .AddTo(_disposables);
+
+            _inventory.GetAmount(InventoryIds.Coins)
+                .Subscribe(v => _view.LabelCoins.text = FormatAmount(v))
+                .AddTo(_disposables);
         }
+
+        // ── Private helpers ───────────────────────────────────────────────────
 
         private void OnCategoryChanged(ShopCategory category)
         {
@@ -66,13 +120,12 @@ namespace LL.Presentation.Shop
             else    el.RemoveFromClassList("active-cat");
         }
 
-        public void Dispose()
-        {
-            _view.BtnFeatured.clicked -= _onFeatured;
-            _view.BtnCurrency.clicked -= _onCurrency;
-            _view.BtnBundles.clicked  -= _onBundles;
-            _view.BtnOffers.clicked   -= _onOffers;
-            _disposables.Dispose();
-        }
+        /// <summary>Formats a BigDouble for display; shows integers without decimals.</summary>
+        private static string FormatAmount(BigDouble value)
+            => BigDouble.IsInfinity(value) ? "∞" : value.ToString();
+
+        // ── IDisposable ───────────────────────────────────────────────────────
+
+        public void Dispose() => _disposables.Dispose();
     }
 }

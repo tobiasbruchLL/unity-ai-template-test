@@ -5,7 +5,11 @@
       "Bash(where gh:*)",
       "Bash(grep -E \"\\\\.\\(cs|json\\)$\")",
       "Bash(grep -v \"\\\\.meta$\")",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(find:*)",
+      "Bash(xargs cat:*)",
+      "Bash(xargs grep:*)",
+      "Bash(xargs dirname:*)"
     ]
   }
 }

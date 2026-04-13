@@ -113,6 +113,35 @@
                 </ui:VisualElement>
 
             </ui:VisualElement>
+
+            <ui:Label text="COIN PACKAGES" class="section-heading" />
+            <ui:VisualElement class="gem-grid">
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1FA99;" class="gem-icon" />
+                    <ui:Label text="1,000 Coins" class="card-name" />
+                    <ui:Button name="btn-coin-0" text="50 &#x1F48E;" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1FA99;" class="gem-icon" />
+                    <ui:Label text="5,000 Coins" class="card-name" />
+                    <ui:Button name="btn-coin-1" text="200 &#x1F48E;" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1FA99;" class="gem-icon" />
+                    <ui:Label text="15,000 Coins" class="card-name" />
+                    <ui:Button name="btn-coin-2" text="500 &#x1F48E;" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1FA99;" class="gem-icon" />
+                    <ui:Label text="50,000 Coins" class="card-name" />
+                    <ui:Button name="btn-coin-3" text="1,500 &#x1F48E;" class="price-btn" />
+                </ui:VisualElement>
+
+            </ui:VisualElement>
         </ui:ScrollView>
 
         <!-- ── BUNDLES PANEL ── -->

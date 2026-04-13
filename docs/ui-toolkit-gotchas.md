@@ -1,5 +1,25 @@
 # UI Toolkit Gotchas
 
+## Wrapping `Button.clicked` as an R3 Observable
+
+`Button.clicked` is a plain C# `Action` (not a `UnityEvent`), so use the two-argument `Observable.FromEvent` overload directly — no conversion delegate needed:
+
+```csharp
+// Assets/_Common/UIToolkitExtensions.cs
+public static Observable<Unit> OnClickedAsObservable(this Button button)
+    => Observable.FromEvent(h => button.clicked += h, h => button.clicked -= h);
+```
+
+Usage in a presenter — subscribe via `_disposables` so no manual `-=` in `Dispose()` is needed:
+
+```csharp
+_view.BtnStart.OnClickedAsObservable()
+    .Subscribe(_ => _state.DoSomething())
+    .AddTo(_disposables);
+```
+
+Do **not** use the three-argument `UnityEvent` overload (`Observable.FromEvent<UnityAction, Unit>(...)`); that's for `UnityEvent` objects, not plain `Action` fields.
+
 ## `UnityEngine.UIElements` type name collisions
 
 `UnityEngine.UIElements` exports types with common names that can silently collide with project types:

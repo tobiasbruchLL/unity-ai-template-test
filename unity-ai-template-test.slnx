@@ -1,5 +1,7 @@
 ﻿<Solution>
+  <Project Path="LL.Core.csproj" />
   <Project Path="LL.Common.csproj" />
   <Project Path="LL.Template.Presentation.csproj" />
-  <Project Path="LL.Core.csproj" />
+  <Project Path="LL.Infrastructure.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
 </Solution>

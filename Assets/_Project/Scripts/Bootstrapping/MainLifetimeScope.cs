@@ -4,6 +4,7 @@ using VContainer.Unity;
 using LL.Core.Inventory;
 using LL.Core.Navigation;
 using LL.Core.Shop;
+using LL.Infrastructure.Shop;
 using LL.Presentation.Navigation;
 using LL.Presentation.Shop;
 
@@ -15,6 +16,9 @@ public class MainLifetimeScope : LifetimeScope
 
         // Inventory
         builder.Register<Inventory>(Lifetime.Singleton);
+
+        // IAP
+        builder.Register<IIAPService, IAPService>(Lifetime.Singleton);
 
         // Navigation
         builder.Register<NavigationState>(Lifetime.Singleton);
