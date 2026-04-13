@@ -1,0 +1,219 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="../USS/ShopScreen.uss" />
+
+    <!-- ═══ HEADER ═══ -->
+    <ui:VisualElement name="shop-header" class="shop-header">
+        <ui:Label name="shop-title" text="SHOP" class="shop-title" />
+        <ui:VisualElement name="currency-cluster" class="currency-cluster">
+            <ui:VisualElement class="currency-pill">
+                <ui:Label text="&#x1F48E;" class="currency-icon" />
+                <ui:Label name="label-gems" text="0" class="currency-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="currency-pill">
+                <ui:Label text="&#x1FA99;" class="currency-icon" />
+                <ui:Label name="label-coins" text="0" class="currency-value" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+
+    <!-- ═══ CATEGORY TAB BAR ═══ -->
+    <ui:ScrollView name="category-scroll" mode="Horizontal"
+                   class="category-scroll"
+                   horizontal-scroller-visibility="Hidden"
+                   vertical-scroller-visibility="Hidden">
+        <ui:VisualElement class="category-tab-row">
+            <ui:Button name="btn-cat-featured" class="category-tab active-cat" text="Featured" />
+            <ui:Button name="btn-cat-currency" class="category-tab"            text="Currency" />
+            <ui:Button name="btn-cat-bundles"  class="category-tab"            text="Bundles" />
+            <ui:Button name="btn-cat-offers"   class="category-tab"            text="Offers" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+
+    <!-- ═══ CONTENT BODY ═══ -->
+    <ui:VisualElement name="shop-body" class="shop-body">
+
+        <!-- ── FEATURED PANEL ── -->
+        <ui:ScrollView name="panel-featured" mode="Vertical"
+                       class="content-panel visible"
+                       vertical-scroller-visibility="Hidden">
+            <!-- Hero banner -->
+            <ui:VisualElement class="hero-banner">
+                <ui:Label text="SEASON PASS" class="hero-eyebrow" />
+                <ui:Label text="Unlock Everything" class="hero-title" />
+                <ui:Label text="Limited-time bundle — save 60%" class="hero-sub" />
+                <ui:Button name="btn-hero-buy" text="GET NOW  —  $9.99" class="hero-buy-btn" />
+            </ui:VisualElement>
+
+            <ui:Label text="FEATURED ITEMS" class="section-heading" />
+
+            <ui:VisualElement class="shop-card featured-card">
+                <ui:VisualElement class="card-icon-box">
+                    <ui:Label text="&#x2694;" class="card-icon-placeholder" />
+                </ui:VisualElement>
+                <ui:VisualElement class="card-info">
+                    <ui:Label text="Dragon Blade Skin" class="card-name" />
+                    <ui:Label text="Legendary weapon cosmetic" class="card-desc" />
+                </ui:VisualElement>
+                <ui:Button name="btn-feat-0" text="$4.99" class="price-btn" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="shop-card featured-card">
+                <ui:VisualElement class="card-icon-box">
+                    <ui:Label text="&#x1F6E1;" class="card-icon-placeholder" />
+                </ui:VisualElement>
+                <ui:VisualElement class="card-info">
+                    <ui:Label text="Void Shield" class="card-name" />
+                    <ui:Label text="Rare armor cosmetic" class="card-desc" />
+                </ui:VisualElement>
+                <ui:Button name="btn-feat-1" text="$2.99" class="price-btn" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+
+        <!-- ── CURRENCY PANEL ── -->
+        <ui:ScrollView name="panel-currency" mode="Vertical"
+                       class="content-panel"
+                       vertical-scroller-visibility="Hidden">
+            <ui:Label text="GEM PACKAGES" class="section-heading" />
+            <ui:VisualElement class="gem-grid">
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1F48E;" class="gem-icon" />
+                    <ui:Label text="100 Gems" class="card-name" />
+                    <ui:Button name="btn-gem-0" text="$0.99" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1F48E;" class="gem-icon" />
+                    <ui:Label text="500 Gems" class="card-name" />
+                    <ui:Button name="btn-gem-1" text="$3.99" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1F48E;" class="gem-icon" />
+                    <ui:Label text="1,000 Gems" class="card-name" />
+                    <ui:Button name="btn-gem-2" text="$6.99" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1F48E;" class="gem-icon" />
+                    <ui:Label text="2,500 Gems" class="card-name" />
+                    <ui:Button name="btn-gem-3" text="$14.99" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1F48E;" class="gem-icon" />
+                    <ui:Label text="5,000 Gems" class="card-name" />
+                    <ui:Button name="btn-gem-4" text="$24.99" class="price-btn" />
+                </ui:VisualElement>
+
+                <ui:VisualElement class="shop-card gem-card">
+                    <ui:Label text="&#x1F48E;" class="gem-icon" />
+                    <ui:Label text="10,000 Gems" class="card-name" />
+                    <ui:Button name="btn-gem-5" text="$39.99" class="price-btn" />
+                </ui:VisualElement>
+
+            </ui:VisualElement>
+        </ui:ScrollView>
+
+        <!-- ── BUNDLES PANEL ── -->
+        <ui:ScrollView name="panel-bundles" mode="Vertical"
+                       class="content-panel"
+                       vertical-scroller-visibility="Hidden">
+            <ui:Label text="BUNDLE OFFERS" class="section-heading" />
+
+            <ui:VisualElement class="shop-card featured-card">
+                <ui:VisualElement class="card-icon-box">
+                    <ui:Label text="&#x1F4E6;" class="card-icon-placeholder" />
+                </ui:VisualElement>
+                <ui:VisualElement class="card-info">
+                    <ui:Label text="Starter Bundle" class="card-name" />
+                    <ui:Label text="500 Gems + 3 skins" class="card-desc" />
+                </ui:VisualElement>
+                <ui:Button name="btn-bundle-0" text="$4.99" class="price-btn" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="shop-card featured-card">
+                <ui:VisualElement class="card-icon-box">
+                    <ui:Label text="&#x1F381;" class="card-icon-placeholder" />
+                </ui:VisualElement>
+                <ui:VisualElement class="card-info">
+                    <ui:Label text="Hero Bundle" class="card-name" />
+                    <ui:Label text="2,000 Gems + hero unlock" class="card-desc" />
+                </ui:VisualElement>
+                <ui:Button name="btn-bundle-1" text="$12.99" class="price-btn" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="shop-card featured-card">
+                <ui:VisualElement class="card-icon-box">
+                    <ui:Label text="&#x1F451;" class="card-icon-placeholder" />
+                </ui:VisualElement>
+                <ui:VisualElement class="card-info">
+                    <ui:Label text="Royal Bundle" class="card-name" />
+                    <ui:Label text="5,000 Gems + exclusive mount" class="card-desc" />
+                </ui:VisualElement>
+                <ui:Button name="btn-bundle-2" text="$29.99" class="price-btn" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="shop-card featured-card">
+                <ui:VisualElement class="card-icon-box">
+                    <ui:Label text="&#x1F525;" class="card-icon-placeholder" />
+                </ui:VisualElement>
+                <ui:VisualElement class="card-info">
+                    <ui:Label text="Ultimate Bundle" class="card-name" />
+                    <ui:Label text="10,000 Gems + all skins" class="card-desc" />
+                </ui:VisualElement>
+                <ui:Button name="btn-bundle-3" text="$49.99" class="price-btn" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+
+        <!-- ── OFFERS PANEL ── -->
+        <ui:ScrollView name="panel-offers" mode="Vertical"
+                       class="content-panel"
+                       vertical-scroller-visibility="Hidden">
+            <ui:Label text="LIMITED-TIME OFFERS" class="section-heading" />
+
+            <ui:VisualElement class="shop-card offer-card">
+                <ui:Label text="HOT DEAL" class="offer-badge" />
+                <ui:VisualElement class="offer-card-row">
+                    <ui:VisualElement class="card-icon-box">
+                        <ui:Label text="&#x26A1;" class="card-icon-placeholder" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="card-info">
+                        <ui:Label text="Weekend Flash" class="card-name" />
+                        <ui:Label text="Double gems for 48h" class="card-desc" />
+                    </ui:VisualElement>
+                    <ui:Button name="btn-offer-0" text="$1.99" class="price-btn" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="shop-card offer-card">
+                <ui:Label text="ENDS SOON" class="offer-badge offer-badge--urgent" />
+                <ui:VisualElement class="offer-card-row">
+                    <ui:VisualElement class="card-icon-box">
+                        <ui:Label text="&#x1F319;" class="card-icon-placeholder" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="card-info">
+                        <ui:Label text="Lunar Event Pack" class="card-name" />
+                        <ui:Label text="Exclusive seasonal skins" class="card-desc" />
+                    </ui:VisualElement>
+                    <ui:Button name="btn-offer-1" text="$7.99" class="price-btn" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="shop-card offer-card">
+                <ui:Label text="NEW" class="offer-badge offer-badge--new" />
+                <ui:VisualElement class="offer-card-row">
+                    <ui:VisualElement class="card-icon-box">
+                        <ui:Label text="&#x1F33F;" class="card-icon-placeholder" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="card-info">
+                        <ui:Label text="Spring Festival" class="card-name" />
+                        <ui:Label text="Flower armour set" class="card-desc" />
+                    </ui:VisualElement>
+                    <ui:Button name="btn-offer-2" text="$5.99" class="price-btn" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:ScrollView>
+
+    </ui:VisualElement>
+</ui:UXML>

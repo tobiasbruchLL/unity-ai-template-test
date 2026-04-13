@@ -1,0 +1,298 @@
+/* ═══════════════════════════════════════════
+   SHOP SCREEN  —  ShopScreen.uss
+   Colors match MainLayout.uss dark theme
+═══════════════════════════════════════════ */
+
+/* ── HEADER ── */
+.shop-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 12px 24px;
+    background-color: rgb(28, 28, 36);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(60, 60, 80);
+    flex-shrink: 0;
+}
+
+.shop-title {
+    font-size: 28px;
+    color: rgb(220, 220, 230);
+    -unity-font-style: bold;
+    letter-spacing: 4px;
+}
+
+.currency-cluster {
+    flex-direction: row;
+    align-items: center;
+}
+
+.currency-pill {
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(18, 18, 22);
+    border-width: 1px;
+    border-color: rgb(60, 60, 80);
+    border-radius: 20px;
+    padding: 6px 14px;
+    margin-left: 10px;
+}
+
+.currency-icon {
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+.currency-value {
+    font-size: 16px;
+    color: rgb(220, 220, 230);
+    -unity-font-style: bold;
+}
+
+/* ── CATEGORY TAB BAR ── */
+.category-scroll {
+    background-color: rgb(28, 28, 36);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(60, 60, 80);
+    height: 64px;
+    flex-shrink: 0;
+}
+
+.category-tab-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px;
+    height: 64px;
+}
+
+.category-tab {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: 20px;
+    color: rgb(140, 140, 160);
+    font-size: 16px;
+    -unity-font-style: bold;
+    padding: 8px 22px;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.category-tab:hover {
+    background-color: rgba(99, 120, 255, 0.12);
+    color: rgb(220, 220, 230);
+}
+
+.category-tab.active-cat {
+    background-color: rgb(99, 120, 255);
+    color: rgb(255, 255, 255);
+}
+
+/* ── CONTENT BODY ── */
+.shop-body {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Same visibility pattern as .tab-screen / .visible in MainLayout */
+.content-panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: none;
+    padding: 16px;
+}
+
+.content-panel.visible {
+    display: flex;
+}
+
+/* ── SECTION HEADING ── */
+.section-heading {
+    font-size: 13px;
+    color: rgb(140, 140, 160);
+    -unity-font-style: bold;
+    margin-bottom: 12px;
+    margin-top: 4px;
+    letter-spacing: 2px;
+}
+
+/* ── HERO BANNER ── */
+.hero-banner {
+    background-color: rgb(40, 44, 80);
+    border-width: 1px;
+    border-color: rgb(99, 120, 255);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+
+.hero-eyebrow {
+    font-size: 13px;
+    color: rgb(99, 120, 255);
+    -unity-font-style: bold;
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+}
+
+.hero-title {
+    font-size: 28px;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.hero-sub {
+    font-size: 15px;
+    color: rgb(140, 140, 160);
+    margin-bottom: 20px;
+}
+
+.hero-buy-btn {
+    background-color: rgb(99, 120, 255);
+    border-width: 0;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    -unity-font-style: bold;
+    padding: 12px 24px;
+    align-self: stretch;
+}
+
+.hero-buy-btn:hover {
+    background-color: rgb(120, 140, 255);
+}
+
+/* ── BASE SHOP CARD ── */
+.shop-card {
+    background-color: rgb(28, 28, 36);
+    border-width: 1px;
+    border-color: rgb(60, 60, 80);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* ── FEATURED / BUNDLE CARD (full-width row) ── */
+.featured-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 16px;
+}
+
+.card-icon-box {
+    width: 64px;
+    height: 64px;
+    background-color: rgb(18, 18, 22);
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 14px;
+}
+
+.card-icon-placeholder {
+    font-size: 32px;
+}
+
+.card-info {
+    flex-grow: 1;
+    flex-direction: column;
+    margin-right: 12px;
+}
+
+.card-name {
+    font-size: 16px;
+    color: rgb(220, 220, 230);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.card-desc {
+    font-size: 13px;
+    color: rgb(140, 140, 160);
+    white-space: normal;
+}
+
+/* ── PRICE BUTTON ── */
+.price-btn {
+    background-color: rgb(99, 120, 255);
+    border-width: 0;
+    border-radius: 10px;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    -unity-font-style: bold;
+    padding: 10px 16px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.price-btn:hover {
+    background-color: rgb(120, 140, 255);
+}
+
+/* ── GEM GRID (2-column) ── */
+.gem-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.gem-card {
+    width: 48%;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 12px 16px 12px;
+    margin-bottom: 12px;
+}
+
+.gem-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.gem-card .card-name {
+    font-size: 15px;
+    margin-bottom: 14px;
+    -unity-text-align: middle-center;
+}
+
+.gem-card .price-btn {
+    align-self: stretch;
+    -unity-text-align: middle-center;
+}
+
+/* ── OFFER CARD (badge on top, row content below) ── */
+.offer-card {
+    flex-direction: column;
+    padding: 0;
+}
+
+.offer-badge {
+    background-color: rgb(99, 120, 255);
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    -unity-font-style: bold;
+    padding: 5px 14px;
+    letter-spacing: 2px;
+    -unity-text-align: middle-center;
+}
+
+.offer-badge--urgent {
+    background-color: rgb(220, 60, 60);
+}
+
+.offer-badge--new {
+    background-color: rgb(40, 180, 100);
+}
+
+.offer-card-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+}

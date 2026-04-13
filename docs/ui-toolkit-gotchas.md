@@ -67,3 +67,107 @@ Edit font sizes, heights, padding, etc. directly in the `.uss` file. Safe to do 
 ## UIDocument query timing
 
 Query named elements in `Awake()` on the same GameObject as `UIDocument`. By the time `Awake()` runs, `UIDocument.OnEnable()` has already built the visual tree. If elements come back null, confirm the `name` attribute in UXML matches exactly (case-sensitive).
+
+## UXML template embedding (`<ui:Template>` + `<ui:Instance>`)
+
+To embed one UXML file inside another, declare the template before `<Style>` and instantiate it with `<ui:Instance>`:
+
+```xml
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Template name="ShopScreen" src="ShopScreen.uxml" />  <!-- must be before <Style> -->
+    <Style src="../USS/MainLayout.uss" />
+    ...
+    <ui:VisualElement name="tab-shop">
+        <ui:Instance template="ShopScreen" />
+    </ui:VisualElement>
+```
+
+The `src` path is relative to the containing UXML file's location. Both files in `UXML/` means `src="ShopScreen.uxml"` (filename only).
+
+**Critical:** UIToolkit wraps `<ui:Instance>` content in a generated `TemplateContainer` element. This container does **not** auto-fill its parent — you must size it explicitly in USS:
+
+```css
+.parent-class > TemplateContainer {
+    flex-grow: 1;
+    flex-direction: column;
+}
+```
+
+Without this, the embedded screen will either collapse to zero height or not fill its container.
+
+## Embedded screens conflict with centered tab panels
+
+The default `.tab-screen` class uses `align-items: center; justify-content: center`, which is fine for a simple placeholder label but breaks a complex embedded screen that needs to fill all available space. Use a modifier class on tabs that host real screens:
+
+```xml
+<!-- simple placeholder — centering is fine -->
+<ui:VisualElement name="tab-home" class="tab-screen">
+    <ui:Label text="Home" class="tab-screen-label" />
+</ui:VisualElement>
+
+<!-- complex embedded screen — needs fill override -->
+<ui:VisualElement name="tab-shop" class="tab-screen tab-screen--fill">
+    <ui:Instance template="ShopScreen" />
+</ui:VisualElement>
+```
+
+```css
+.tab-screen--fill {
+    align-items: stretch;
+    justify-content: flex-start;
+}
+.tab-screen--fill > TemplateContainer {
+    flex-grow: 1;
+    flex-direction: column;
+}
+```
+
+## ScrollView sizing requirements
+
+**Vertical ScrollView** (scrollable content list): The ScrollView must have a constrained height — unconstrained, UIToolkit renders it at its full content height with no scroll. Absolute positioning with `top: 0; bottom: 0` inside a `position: relative; overflow: hidden` parent provides this constraint:
+
+```css
+.shop-body          { flex-grow: 1; position: relative; overflow: hidden; }
+.content-panel      { position: absolute; left: 0; right: 0; top: 0; bottom: 0; }
+```
+
+**Horizontal ScrollView** (e.g. category tab bar): Needs an explicit fixed height and `flex-shrink: 0`, otherwise it collapses or stretches unpredictably:
+
+```css
+.category-scroll { height: 64px; flex-shrink: 0; }
+```
+
+To hide the scrollbar chrome use UXML attributes (not CSS):
+
+```xml
+<ui:ScrollView mode="Horizontal"
+               horizontal-scroller-visibility="Hidden"
+               vertical-scroller-visibility="Hidden">
+```
+
+## 2-column grid with `flex-wrap`
+
+`flex-wrap: wrap` works in UIToolkit. For a 2-column card grid, put `width: 48%` on each card and `justify-content: space-between` on the container. The container must be width-constrained (a ScrollView's content area provides this automatically):
+
+```css
+.gem-grid { flex-direction: row; flex-wrap: wrap; justify-content: space-between; }
+.gem-card { width: 48%; }
+```
+
+## Emoji characters in UXML
+
+Raw emoji in `text=""` attributes are unreliable across platforms. Use XML unicode escapes instead:
+
+```xml
+<!-- BAD -->
+<ui:Label text="💎" />
+
+<!-- GOOD -->
+<ui:Label text="&#x1F48E;" />
+```
+
+## Multiple view MonoBehaviours sharing one UIDocument
+
+Multiple `MonoBehaviour` views can each call `GetComponent<UIDocument>().rootVisualElement` on the same GameObject and then query with `Q<>()` independently — they all receive the same root element reference. This is safe and correct.
+
+Avoid name collisions between elements queried by different views. Use prefixes as namespacing: `btn-cat-*` for shop category buttons, `panel-*` for shop panels, `btn-*` for nav buttons, etc.

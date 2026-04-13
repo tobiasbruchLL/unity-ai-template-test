@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Template name="ShopScreen" src="ShopScreen.uxml" />
     <Style src="../USS/MainLayout.uss" />
     <ui:VisualElement name="root" class="root">
         <ui:VisualElement name="content-area" class="content-area">
@@ -8,8 +9,8 @@
             <ui:VisualElement name="tab-home" class="tab-screen">
                 <ui:Label text="Home" class="tab-screen-label" />
             </ui:VisualElement>
-            <ui:VisualElement name="tab-shop" class="tab-screen">
-                <ui:Label text="Shop" class="tab-screen-label" />
+            <ui:VisualElement name="tab-shop" class="tab-screen tab-screen--fill">
+                <ui:Instance template="ShopScreen" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="bottom-nav" class="bottom-nav">

@@ -59,3 +59,15 @@
     border-top-width: 3px;
     border-top-color: rgb(99, 120, 255);
 }
+
+/* Override centering for tabs that host complex embedded screens */
+.tab-screen--fill {
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+/* UIToolkit wraps <ui:Instance> content in a TemplateContainer; size it to fill */
+.tab-screen--fill > TemplateContainer {
+    flex-grow: 1;
+    flex-direction: column;
+}
