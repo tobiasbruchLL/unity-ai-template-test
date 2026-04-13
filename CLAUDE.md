@@ -44,6 +44,10 @@ Open the project in Unity Hub with Unity 6000.3.8f1. IDE options: VS Code (`.vsc
 
 NuGet packages are managed via NuGetForUnity (`Assets/packages.config`). To add .NET packages, use the NuGetForUnity editor window rather than editing `packages.config` directly.
 
+## Workflow
+
+- After making code edits, always run `mcp__ide__getDiagnostics` to check for compiler errors before reporting a task as complete
+
 ## Coding Conventions
 
 - New feature areas get their own assembly definition (`.asmdef`) placed alongside the scripts folder

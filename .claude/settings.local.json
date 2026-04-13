@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.cs$|\\\\.asmdef$|\\\\.json$|^README|^Packages\")",
+      "Bash(where gh:*)",
+      "Bash(grep -E \"\\\\.\\(cs|json\\)$\")",
+      "Bash(grep -v \"\\\\.meta$\")",
+      "mcp__ide__getDiagnostics"
+    ]
+  }
+}

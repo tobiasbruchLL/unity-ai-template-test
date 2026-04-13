@@ -1,0 +1,61 @@
+.root {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    background-color: rgb(18, 18, 22);
+}
+
+.content-area {
+    flex-grow: 1;
+    position: relative;
+}
+
+.tab-screen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.tab-screen.visible {
+    display: flex;
+}
+
+.tab-screen-label {
+    font-size: 28px;
+    color: rgb(220, 220, 230);
+    -unity-font-style: bold;
+}
+
+.bottom-nav {
+    flex-direction: row;
+    height: 72px;
+    background-color: rgb(28, 28, 36);
+    border-top-width: 1px;
+    border-top-color: rgb(60, 60, 80);
+}
+
+.nav-tab {
+    flex-grow: 1;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: 0;
+    color: rgb(140, 140, 160);
+    font-size: 13px;
+    -unity-font-style: bold;
+}
+
+.nav-tab:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab.active {
+    color: rgb(255, 255, 255);
+    border-top-width: 3px;
+    border-top-color: rgb(99, 120, 255);
+}

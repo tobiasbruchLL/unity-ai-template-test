@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="../USS/MainLayout.uss" />
+    <ui:VisualElement name="root" class="root">
+        <ui:VisualElement name="content-area" class="content-area">
+            <ui:VisualElement name="tab-placeholder" class="tab-screen">
+                <ui:Label text="Placeholder" class="tab-screen-label" />
+            </ui:VisualElement>
+            <ui:VisualElement name="tab-home" class="tab-screen">
+                <ui:Label text="Home" class="tab-screen-label" />
+            </ui:VisualElement>
+            <ui:VisualElement name="tab-shop" class="tab-screen">
+                <ui:Label text="Shop" class="tab-screen-label" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="bottom-nav" class="bottom-nav">
+            <ui:Button name="btn-placeholder" class="nav-tab" text="Placeholder" />
+            <ui:Button name="btn-home"        class="nav-tab" text="Home" />
+            <ui:Button name="btn-shop"        class="nav-tab" text="Shop" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
