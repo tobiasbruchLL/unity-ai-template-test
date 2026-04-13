@@ -55,7 +55,6 @@ Project-specific docs live in `docs/`. Consult relevant files there before worki
 
 ## Coding Conventions
 
-- New feature areas get their own assembly definition (`.asmdef`) placed alongside the scripts folder
 - VContainer installers (classes implementing `IInstaller`) wire up dependencies for a scene or feature scope
 - Reactive state lives in Core; Presentation subscribes to Core observables and drives UI
 - Avoid static singletons; prefer constructor/field injection via VContainer
