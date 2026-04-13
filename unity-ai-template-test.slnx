@@ -1,4 +1,5 @@
 ﻿<Solution>
+  <Project Path="LL.Common.csproj" />
   <Project Path="LL.Template.Presentation.csproj" />
   <Project Path="LL.Core.csproj" />
 </Solution>

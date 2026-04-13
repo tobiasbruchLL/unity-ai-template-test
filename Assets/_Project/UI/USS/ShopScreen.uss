@@ -8,7 +8,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px 12px 24px;
+    padding: 30px 36px 18px 36px;
     background-color: rgb(28, 28, 36);
     border-bottom-width: 1px;
     border-bottom-color: rgb(60, 60, 80);
@@ -16,7 +16,7 @@
 }
 
 .shop-title {
-    font-size: 28px;
+    font-size: 42px;
     color: rgb(220, 220, 230);
     -unity-font-style: bold;
     letter-spacing: 4px;
@@ -33,18 +33,18 @@
     background-color: rgb(18, 18, 22);
     border-width: 1px;
     border-color: rgb(60, 60, 80);
-    border-radius: 20px;
-    padding: 6px 14px;
-    margin-left: 10px;
+    border-radius: 30px;
+    padding: 9px 21px;
+    margin-left: 15px;
 }
 
 .currency-icon {
-    font-size: 18px;
-    margin-right: 6px;
+    font-size: 27px;
+    margin-right: 9px;
 }
 
 .currency-value {
-    font-size: 16px;
+    font-size: 24px;
     color: rgb(220, 220, 230);
     -unity-font-style: bold;
 }
@@ -54,26 +54,26 @@
     background-color: rgb(28, 28, 36);
     border-bottom-width: 1px;
     border-bottom-color: rgb(60, 60, 80);
-    height: 64px;
+    height: 96px;
     flex-shrink: 0;
 }
 
 .category-tab-row {
     flex-direction: row;
     align-items: center;
-    padding: 8px 16px;
-    height: 64px;
+    padding: 12px 24px;
+    height: 96px;
 }
 
 .category-tab {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
-    border-radius: 20px;
+    border-radius: 30px;
     color: rgb(140, 140, 160);
-    font-size: 16px;
+    font-size: 24px;
     -unity-font-style: bold;
-    padding: 8px 22px;
-    margin-right: 8px;
+    padding: 12px 33px;
+    margin-right: 12px;
     white-space: nowrap;
 }
 
@@ -102,7 +102,7 @@
     top: 0;
     bottom: 0;
     display: none;
-    padding: 16px;
+    padding: 24px;
 }
 
 .content-panel.visible {
@@ -111,11 +111,11 @@
 
 /* ── SECTION HEADING ── */
 .section-heading {
-    font-size: 13px;
+    font-size: 20px;
     color: rgb(140, 140, 160);
     -unity-font-style: bold;
-    margin-bottom: 12px;
-    margin-top: 4px;
+    margin-bottom: 18px;
+    margin-top: 6px;
     letter-spacing: 2px;
 }
 
@@ -124,42 +124,42 @@
     background-color: rgb(40, 44, 80);
     border-width: 1px;
     border-color: rgb(99, 120, 255);
-    border-radius: 16px;
-    padding: 28px 24px;
-    margin-bottom: 20px;
+    border-radius: 24px;
+    padding: 42px 36px;
+    margin-bottom: 30px;
     align-items: flex-start;
     flex-shrink: 0;
 }
 
 .hero-eyebrow {
-    font-size: 13px;
+    font-size: 20px;
     color: rgb(99, 120, 255);
     -unity-font-style: bold;
     letter-spacing: 3px;
-    margin-bottom: 6px;
+    margin-bottom: 9px;
 }
 
 .hero-title {
-    font-size: 28px;
+    font-size: 42px;
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .hero-sub {
-    font-size: 15px;
+    font-size: 23px;
     color: rgb(140, 140, 160);
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .hero-buy-btn {
     background-color: rgb(99, 120, 255);
     border-width: 0;
-    border-radius: 10px;
+    border-radius: 15px;
     color: rgb(255, 255, 255);
-    font-size: 16px;
+    font-size: 24px;
     -unity-font-style: bold;
-    padding: 12px 24px;
+    padding: 18px 36px;
     align-self: stretch;
 }
 
@@ -172,8 +172,8 @@
     background-color: rgb(28, 28, 36);
     border-width: 1px;
     border-color: rgb(60, 60, 80);
-    border-radius: 14px;
-    margin-bottom: 12px;
+    border-radius: 21px;
+    margin-bottom: 18px;
     overflow: hidden;
     flex-shrink: 0;
 }
@@ -182,39 +182,39 @@
 .featured-card {
     flex-direction: row;
     align-items: center;
-    padding: 16px;
+    padding: 24px;
 }
 
 .card-icon-box {
-    width: 64px;
-    height: 64px;
+    width: 96px;
+    height: 96px;
     background-color: rgb(18, 18, 22);
-    border-radius: 10px;
+    border-radius: 15px;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-right: 14px;
+    margin-right: 21px;
 }
 
 .card-icon-placeholder {
-    font-size: 32px;
+    font-size: 48px;
 }
 
 .card-info {
     flex-grow: 1;
     flex-direction: column;
-    margin-right: 12px;
+    margin-right: 18px;
 }
 
 .card-name {
-    font-size: 16px;
+    font-size: 24px;
     color: rgb(220, 220, 230);
     -unity-font-style: bold;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .card-desc {
-    font-size: 13px;
+    font-size: 20px;
     color: rgb(140, 140, 160);
     white-space: normal;
 }
@@ -223,11 +223,11 @@
 .price-btn {
     background-color: rgb(99, 120, 255);
     border-width: 0;
-    border-radius: 10px;
+    border-radius: 15px;
     color: rgb(255, 255, 255);
-    font-size: 15px;
+    font-size: 23px;
     -unity-font-style: bold;
-    padding: 10px 16px;
+    padding: 15px 24px;
     flex-shrink: 0;
     white-space: nowrap;
 }
@@ -247,18 +247,18 @@
     width: 48%;
     flex-direction: column;
     align-items: center;
-    padding: 20px 12px 16px 12px;
-    margin-bottom: 12px;
+    padding: 30px 18px 24px 18px;
+    margin-bottom: 18px;
 }
 
 .gem-icon {
-    font-size: 40px;
-    margin-bottom: 10px;
+    font-size: 60px;
+    margin-bottom: 15px;
 }
 
 .gem-card .card-name {
-    font-size: 15px;
-    margin-bottom: 14px;
+    font-size: 23px;
+    margin-bottom: 21px;
     -unity-text-align: middle-center;
 }
 
@@ -276,9 +276,9 @@
 .offer-badge {
     background-color: rgb(99, 120, 255);
     color: rgb(255, 255, 255);
-    font-size: 12px;
+    font-size: 18px;
     -unity-font-style: bold;
-    padding: 5px 14px;
+    padding: 8px 21px;
     letter-spacing: 2px;
     -unity-text-align: middle-center;
 }
@@ -294,5 +294,5 @@
 .offer-card-row {
     flex-direction: row;
     align-items: center;
-    padding: 12px 16px;
+    padding: 18px 24px;
 }
