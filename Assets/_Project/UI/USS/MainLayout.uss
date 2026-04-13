@@ -26,14 +26,14 @@
 }
 
 .tab-screen-label {
-    font-size: 28px;
+    font-size: 40px;
     color: rgb(220, 220, 230);
     -unity-font-style: bold;
 }
 
 .bottom-nav {
     flex-direction: row;
-    height: 72px;
+    height: 100px;
     background-color: rgb(28, 28, 36);
     border-top-width: 1px;
     border-top-color: rgb(60, 60, 80);
@@ -46,7 +46,7 @@
     border-width: 0;
     border-radius: 0;
     color: rgb(140, 140, 160);
-    font-size: 13px;
+    font-size: 18px;
     -unity-font-style: bold;
 }
 

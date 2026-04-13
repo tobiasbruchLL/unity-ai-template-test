@@ -45,6 +45,25 @@ Use absolute-positioned panels with `display: none` toggled via USS class, not `
 
 Toggle in code via `AddToClassList` / `RemoveFromClassList` — never set `style.display` directly, so USS stays the single source of truth for layout.
 
+## Scaling the UI — two approaches
+
+There are two ways to scale all UI Toolkit elements up or down:
+
+### Option A — Panel Settings reference resolution (preferred for global scaling)
+
+`MainPanelSettings.asset` uses `ScaleWithScreenSize`. Reducing the reference resolution makes everything appear larger:
+
+- 1080 × 1920 → 1:1 on a 1080p screen
+- 720 × 1280 → ~1.5× larger on the same screen
+
+**Caveat:** The `.asset` file is serialized Unity YAML. Editing it as plain text is fragile — prefer doing this via the Unity Inspector (`Scale Mode → Scale With Screen Size → Reference Resolution`). Editing it raw risks corrupting the asset.
+
+### Option B — USS pixel values (surgical, text-safe)
+
+Edit font sizes, heights, padding, etc. directly in the `.uss` file. Safe to do from any text editor. Only scales the values you touch, so new elements added later won't inherit the change automatically.
+
+**Rule of thumb:** Use Panel Settings for a one-time global rescale; use USS for per-element adjustments.
+
 ## UIDocument query timing
 
 Query named elements in `Awake()` on the same GameObject as `UIDocument`. By the time `Awake()` runs, `UIDocument.OnEnable()` has already built the visual tree. If elements come back null, confirm the `name` attribute in UXML matches exactly (case-sensitive).
