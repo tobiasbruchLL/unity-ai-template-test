@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using BreakInfinity;
 using R3;
 
@@ -7,6 +8,7 @@ namespace LL.Core.Inventory
     public class InventoryService
     {
         private readonly Dictionary<string, ReactiveProperty<BigDouble>> _amounts = new();
+        private readonly Dictionary<string, BigDouble> _aggregateBuffer = new();
 
         /// <summary>
         /// Returns a reactive property tracking the current amount for the given item.
@@ -16,10 +18,37 @@ namespace LL.Core.Inventory
             => GetOrCreate(itemId);
 
         /// <summary>
-        /// Returns an observable that emits whenever the affordability of the given item changes.
+        /// Returns an observable that is true whenever the player can afford the item.
         /// </summary>
         public Observable<bool> CanSpend(InventoryItem item)
             => GetOrCreate(item.Id).Select(amount => amount >= item.Amount);
+
+        /// <summary>
+        /// Returns an observable that is true whenever the player can afford ALL of the supplied
+        /// items simultaneously. Duplicate IDs are summed before comparison.
+        /// </summary>
+        public Observable<bool> CanSpend(IEnumerable<InventoryItem> items)
+        {
+            var totals = Aggregate(items);
+
+            if (totals.Count == 0)
+                return Observable.Return(true);
+
+            if (totals.Count == 1)
+            {
+                var kvp = totals.First();
+                return GetOrCreate(kvp.Key).Select(amount => amount >= kvp.Value);
+            }
+
+            var streams = totals
+                .Select(kvp => GetOrCreate(kvp.Key).Select(amount => amount >= kvp.Value))
+                .ToArray();
+
+            return Observable.CombineLatest<bool>(streams).Select(bools => System.Array.TrueForAll(bools, b => b));
+        }
+
+        /// <inheritdoc cref="CanSpend(IEnumerable{InventoryItem})"/>
+        public Observable<bool> CanSpend(params InventoryItem[] items) => CanSpend((IEnumerable<InventoryItem>)items);
 
         /// <summary>
         /// Adds the item's amount to the inventory.
@@ -39,6 +68,27 @@ namespace LL.Core.Inventory
             return true;
         }
 
+        /// <summary>
+        /// Atomically attempts to spend ALL of the supplied items.
+        /// If ANY item is unaffordable the inventory is unchanged and false is returned.
+        /// Duplicate IDs in the input are summed before the check.
+        /// </summary>
+        public bool TrySpend(IEnumerable<InventoryItem> items)
+        {
+            var totals = Aggregate(items);
+
+            foreach (var kvp in totals)
+                if (GetOrCreate(kvp.Key).Value < kvp.Value) return false;
+
+            foreach (var kvp in totals)
+                GetOrCreate(kvp.Key).Value -= kvp.Value;
+
+            return true;
+        }
+
+        /// <inheritdoc cref="TrySpend(IEnumerable{InventoryItem})"/>
+        public bool TrySpend(params InventoryItem[] items) => TrySpend((IEnumerable<InventoryItem>)items);
+
         private ReactiveProperty<BigDouble> GetOrCreate(string itemId)
         {
             if (!_amounts.TryGetValue(itemId, out var prop))
@@ -47,6 +97,17 @@ namespace LL.Core.Inventory
                 _amounts[itemId] = prop;
             }
             return prop;
+        }
+
+        private Dictionary<string, BigDouble> Aggregate(IEnumerable<InventoryItem> items)
+        {
+            _aggregateBuffer.Clear();
+            foreach (var item in items)
+            {
+                _aggregateBuffer.TryGetValue(item.Id, out var existing);
+                _aggregateBuffer[item.Id] = existing + item.Amount;
+            }
+            return _aggregateBuffer;
         }
     }
 }

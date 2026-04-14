@@ -1,22 +1,24 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using R3;
 using UnityEngine;
 using UnityEngine.Purchasing;
-using UnityEngine.Purchasing.Extension;
 using VContainer.Unity;
 
 namespace LL.Common.IAP
 {
     /// <summary>
-    /// Initializes Unity IAP and fires OnPurchaseSucceeded on each successful purchase.
-    /// Registered as an entry point; VContainer calls Initialize() automatically before Start().
+    /// Initializes Unity IAP (v5) and fires OnPurchaseSucceeded on each successful purchase.
+    /// Registered as an entry point; VContainer calls StartAsync() automatically.
     /// Inject via IIAPService. Product IDs are supplied via IAPConfig.
     /// </summary>
-    public class UnityIAPService : IIAPService, IInitializable, IDisposable, IDetailedStoreListener
+    public class UnityIAPService : IIAPService, IAsyncStartable, IDisposable
     {
         private readonly IAPConfig       _config;
         private readonly Subject<string> _purchaseSucceeded = new();
-        private IStoreController         _controller;
+        private StoreController          _controller;
 
         public Observable<string> OnPurchaseSucceeded => _purchaseSucceeded;
 
@@ -25,14 +27,33 @@ namespace LL.Common.IAP
             _config = config;
         }
 
-        // ── IInitializable ────────────────────────────────────────────────────
+        // ── IAsyncStartable ───────────────────────────────────────────────────
 
-        public void Initialize()
+        public async Awaitable StartAsync(CancellationToken cancellation = default)
         {
-            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            foreach (var productId in _config.ProductIds)
-                builder.AddProduct(productId, ProductType.Consumable);
-            UnityPurchasing.Initialize(this, builder);
+            _controller = UnityIAPServices.StoreController();
+
+            _controller.OnStoreDisconnected   += OnStoreDisconnected;
+            _controller.OnProductsFetched     += OnProductsFetched;
+            _controller.OnProductsFetchFailed += OnProductsFetchFailed;
+            _controller.OnPurchasePending     += OnPurchasePending;
+            _controller.OnPurchaseFailed      += OnPurchaseFailed;
+
+            try
+            {
+                await _controller.Connect();
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[UnityIAPService] Store connection failed: {e.Message}");
+                return;
+            }
+
+            var products = _config.ProductIds
+                .Select(id => new ProductDefinition(id, ProductType.Consumable))
+                .ToList();
+
+            _controller.FetchProducts(products);
         }
 
         // ── IIAPService ───────────────────────────────────────────────────────
@@ -44,39 +65,54 @@ namespace LL.Common.IAP
                 Debug.LogWarning("[UnityIAPService] Store not initialized yet.");
                 return;
             }
-            _controller.InitiatePurchase(productId);
+            _controller.PurchaseProduct(productId);
         }
 
-        // ── IDetailedStoreListener ────────────────────────────────────────────
+        // ── StoreController event handlers ────────────────────────────────────
 
-        public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
+        private void OnStoreDisconnected(StoreConnectionFailureDescription failure)
+            => Debug.LogWarning($"[UnityIAPService] Store disconnected: {failure.Message}");
+
+        private void OnProductsFetched(List<Product> products)
         {
-            _controller = controller;
-            Debug.Log("[UnityIAPService] Store initialized successfully.");
+            Debug.Log($"[UnityIAPService] Products fetched: {products.Count}. Fetching existing purchases.");
+            _controller.FetchPurchases();
         }
 
-        public void OnInitializeFailed(InitializationFailureReason error)
-            => Debug.LogWarning($"[UnityIAPService] Store initialization failed: {error}");
+        private void OnProductsFetchFailed(ProductFetchFailed failure)
+            => Debug.LogWarning($"[UnityIAPService] Products fetch failed: {failure.FailureReason}");
 
-        public void OnInitializeFailed(InitializationFailureReason error, string message)
-            => Debug.LogWarning($"[UnityIAPService] Store initialization failed: {error} — {message}");
-
-        public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
+        private void OnPurchasePending(PendingOrder order)
         {
-            var productId = args.purchasedProduct.definition.id;
-            _purchaseSucceeded.OnNext(productId);
-            Debug.Log($"[UnityIAPService] Purchase complete: {productId}");
-            return PurchaseProcessingResult.Complete;
+            _controller.ConfirmPurchase(order);
+
+            foreach (var item in order.CartOrdered.Items())
+            {
+                var productId = item.Product.definition.id;
+                _purchaseSucceeded.OnNext(productId);
+                Debug.Log($"[UnityIAPService] Purchase complete: {productId}");
+            }
         }
 
-        public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
-            => Debug.LogWarning($"[UnityIAPService] Purchase failed: {product.definition.id} — {failureReason}");
-
-        public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
-            => Debug.LogWarning($"[UnityIAPService] Purchase failed: {product.definition.id} — {failureDescription.reason}: {failureDescription.message}");
+        private void OnPurchaseFailed(FailedOrder order)
+        {
+            foreach (var item in order.CartOrdered.Items())
+                Debug.LogWarning($"[UnityIAPService] Purchase failed: {item.Product.definition.id} — {order.FailureReason}: {order.Details}");
+        }
 
         // ── IDisposable ───────────────────────────────────────────────────────
 
-        public void Dispose() => _purchaseSucceeded.Dispose();
+        public void Dispose()
+        {
+            if (_controller != null)
+            {
+                _controller.OnStoreDisconnected   -= OnStoreDisconnected;
+                _controller.OnProductsFetched     -= OnProductsFetched;
+                _controller.OnProductsFetchFailed -= OnProductsFetchFailed;
+                _controller.OnPurchasePending     -= OnPurchasePending;
+                _controller.OnPurchaseFailed      -= OnPurchaseFailed;
+            }
+            _purchaseSucceeded.Dispose();
+        }
     }
 }
