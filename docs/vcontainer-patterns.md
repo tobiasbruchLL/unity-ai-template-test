@@ -58,6 +58,18 @@ public class UnityIAPService : IIAPService, IInitializable, IDisposable
 builder.RegisterEntryPoint<UnityIAPService>().As<IIAPService>();
 ```
 
+## Dual registration: interface + concrete type
+
+When a service needs to be resolved **both** as an interface (by most consumers) and as its concrete type (by an internal component that needs access to members not on the interface), chain `.As<IFoo>().AsSelf()`:
+
+```csharp
+// ToastService implements IToastService but also exposes OnToastRequested (Observable)
+// which ToastPresenter needs directly.
+builder.Register<ToastService>(Lifetime.Singleton).As<IToastService>().AsSelf();
+```
+
+Without `.AsSelf()`, a constructor that declares `ToastService` (concrete) as a parameter will fail at runtime with a `VContainerException` — the container only knows the interface binding. With both registrations, `IToastService` resolves for general consumers and `ToastService` resolves for internal wiring.
+
 ## Constructor injection
 
 VContainer resolves constructor parameters automatically. No attributes needed.

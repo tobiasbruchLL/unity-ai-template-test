@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using BreakInfinity;
 using LL.Common;
 using LL.Common.IAP;
+using LL.Common.Toast;
 using LL.Core.Inventory;
 using LL.Core.Shop;
 
@@ -17,16 +18,18 @@ namespace LL.Presentation.Shop
         private readonly ShopView            _view;
         private readonly InventoryService    _inventory;
         private readonly IIAPService         _iapService;
+        private readonly IToastService       _toastService;
         private readonly CompositeDisposable _disposables = new();
 
 
         [Inject]
-        public ShopPresenter(ShopState state, ShopView view, InventoryService inventory, IIAPService iapService)
+        public ShopPresenter(ShopState state, ShopView view, InventoryService inventory, IIAPService iapService, IToastService toastService)
         {
-            _state      = state;
-            _view       = view;
-            _inventory  = inventory;
-            _iapService = iapService;
+            _state        = state;
+            _view         = view;
+            _inventory    = inventory;
+            _iapService   = iapService;
+            _toastService = toastService;
         }
 
         public void Start()
@@ -63,14 +66,12 @@ namespace LL.Presentation.Shop
                         if (!_inventory.TrySpend(cost)) return;
                         _inventory.Add(new InventoryItem(InventoryIds.Coins, new BigDouble(pack.Coins)));
                     }).AddTo(_disposables);
-
-                // Grey out the button reactively whenever the player can't afford it
-                var btn = _view.BtnCoinPacks[i];
-                _inventory
-                    .CanSpend(new InventoryItem(InventoryIds.Gems, new BigDouble(pack.GemCost)))
-                    .Subscribe(canAfford => btn.SetEnabled(canAfford))
-                    .AddTo(_disposables);
             }
+
+            _inventory.OnSpendFailed
+                .Where(id => id == InventoryIds.Gems)
+                .Subscribe(_ => _toastService.Show("Not enough Gems"))
+                .AddTo(_disposables);
 
             // ── HUD currency labels ───────────────────────────────────────────
             _inventory.GetAmount(InventoryIds.Gems)

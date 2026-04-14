@@ -10,7 +10,8 @@
       "Bash(xargs grep:*)",
       "Bash(xargs dirname:*)",
       "Skill(update-config)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(xargs -I {} sh -c 'echo \"=== {} ===\" && cat \"{}\"')"
     ]
   }
 }

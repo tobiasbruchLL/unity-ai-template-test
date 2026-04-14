@@ -186,6 +186,22 @@ Raw emoji in `text=""` attributes are unreliable across platforms. Use XML unico
 <ui:Label text="&#x1F48E;" />
 ```
 
+## Overlay elements must set `picking-mode="Ignore"`
+
+Any `VisualElement` that is absolutely positioned over the full screen (e.g. a toast notification, modal backdrop, or HUD layer) will **intercept all pointer events by default**, even when it has no visual content (`display: none` alone is not enough once the element becomes visible). This silently breaks every button beneath the overlay.
+
+Set `picking-mode="Ignore"` in UXML on both the container and any non-interactive children:
+
+```xml
+<ui:VisualElement name="toast-container" class="toast-container" picking-mode="Ignore">
+    <ui:Label name="toast-label" class="toast-label" picking-mode="Ignore" />
+</ui:VisualElement>
+```
+
+Or in C# code: `element.pickingMode = PickingMode.Ignore;`
+
+Only omit (or set to `Position`) on overlay elements that are deliberately interactive (e.g. a modal dialog that should block the scene beneath it).
+
 ## Multiple view MonoBehaviours sharing one UIDocument
 
 Multiple `MonoBehaviour` views can each call `GetComponent<UIDocument>().rootVisualElement` on the same GameObject and then query with `Q<>()` independently — they all receive the same root element reference. This is safe and correct.

@@ -18,5 +18,8 @@
             <ui:Button name="btn-home"        class="nav-tab" text="Home" />
             <ui:Button name="btn-shop"        class="nav-tab" text="Shop" />
         </ui:VisualElement>
+        <ui:VisualElement name="toast-container" class="toast-container" picking-mode="Ignore">
+            <ui:Label name="toast-label" class="toast-label" picking-mode="Ignore" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,0 +1,26 @@
+{
+    "name": "LL.Common.Tests",
+    "rootNamespace": "LL.Common.Tests",
+    "references": [
+        "GUID:845da84e2e5b37945b5cdd68159ce823",
+        "GUID:77221876cc6b8244180b96e320b1bcd4",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "R3.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

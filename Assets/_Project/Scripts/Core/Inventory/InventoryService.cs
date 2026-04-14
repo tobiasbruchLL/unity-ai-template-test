@@ -9,6 +9,13 @@ namespace LL.Core.Inventory
     {
         private readonly Dictionary<string, ReactiveProperty<BigDouble>> _amounts = new();
         private readonly Dictionary<string, BigDouble> _aggregateBuffer = new();
+        private readonly Subject<string> _spendFailed = new();
+
+        /// <summary>
+        /// Fires whenever a TrySpend call fails due to insufficient funds.
+        /// Emits the item ID that could not be afforded.
+        /// </summary>
+        public Observable<string> OnSpendFailed => _spendFailed;
 
         /// <summary>
         /// Returns a reactive property tracking the current amount for the given item.
@@ -63,7 +70,11 @@ namespace LL.Core.Inventory
         public bool TrySpend(InventoryItem item)
         {
             var prop = GetOrCreate(item.Id);
-            if (prop.Value < item.Amount) return false;
+            if (prop.Value < item.Amount)
+            {
+                _spendFailed.OnNext(item.Id);
+                return false;
+            }
             prop.Value -= item.Amount;
             return true;
         }
@@ -78,7 +89,11 @@ namespace LL.Core.Inventory
             var totals = Aggregate(items);
 
             foreach (var kvp in totals)
-                if (GetOrCreate(kvp.Key).Value < kvp.Value) return false;
+                if (GetOrCreate(kvp.Key).Value < kvp.Value)
+                {
+                    _spendFailed.OnNext(kvp.Key);
+                    return false;
+                }
 
             foreach (var kvp in totals)
                 GetOrCreate(kvp.Key).Value -= kvp.Value;
