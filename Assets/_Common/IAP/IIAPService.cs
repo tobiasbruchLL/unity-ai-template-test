@@ -1,8 +1,10 @@
-namespace LL.Core.Shop
+using R3;
+
+namespace LL.Common.IAP
 {
     public interface IIAPService
     {
-        void Initialize();
+        Observable<string> OnPurchaseSucceeded { get; }
         void BuyProduct(string productId);
     }
 }

@@ -1,10 +1,10 @@
 using UnityEngine.UIElements;
 using VContainer;
 using VContainer.Unity;
+using LL.Common.IAP;
 using LL.Core.Inventory;
 using LL.Core.Navigation;
 using LL.Core.Shop;
-using LL.Infrastructure.Shop;
 using LL.Presentation.Navigation;
 using LL.Presentation.Shop;
 
@@ -15,10 +15,12 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<UIDocument>();
 
         // Inventory
-        builder.Register<Inventory>(Lifetime.Singleton);
+        builder.Register<InventoryService>(Lifetime.Singleton);
 
         // IAP
-        builder.Register<IIAPService, IAPService>(Lifetime.Singleton);
+        builder.RegisterInstance(new IAPConfig(IAPProductIds.AllIds));
+        builder.RegisterEntryPoint<UnityIAPService>().As<IIAPService>();
+        builder.RegisterEntryPoint<GemPackPurchaseHandler>();
 
         // Navigation
         builder.Register<NavigationState>(Lifetime.Singleton);

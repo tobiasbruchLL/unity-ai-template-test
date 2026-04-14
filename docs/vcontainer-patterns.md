@@ -37,12 +37,25 @@ Prefer Option B for components that live on a specific known GameObject. Use Opt
 
 ## Entry points
 
-`RegisterEntryPoint<T>()` automatically handles `IStartable`, `ITickable`, and `IDisposable`. VContainer calls `Start()` after the container is built and all dependencies are resolved, and `Dispose()` on scene teardown.
+`RegisterEntryPoint<T>()` automatically handles `IInitializable`, `IStartable`, `ITickable`, and `IDisposable`. VContainer calls them in order — `Initialize()` first, then `Start()` — and `Dispose()` on scene teardown.
 
 ```csharp
 public class NavigationPresenter : IStartable, IDisposable { ... }
 
 builder.RegisterEntryPoint<NavigationPresenter>();
+```
+
+Use `IInitializable` for services that need to run setup logic once before any `IStartable` runs:
+
+```csharp
+public class UnityIAPService : IIAPService, IInitializable, IDisposable
+{
+    public void Initialize() { /* kicks off async Unity IAP init */ }
+    public void Dispose()    { /* clean up subjects / handles */ }
+}
+
+// Register as entry point and expose via interface:
+builder.RegisterEntryPoint<UnityIAPService>().As<IIAPService>();
 ```
 
 ## Constructor injection

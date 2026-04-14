@@ -24,7 +24,7 @@ Presentation (LL.Template.Presentation)
             └── Common (LL.Common)
 ```
 
-- **`Assets/_Common/`** — Shared utilities; `LL.Common.asmdef` is auto-referenced
+- **`Assets/_Common/`** — Shared utilities and Unity-platform adapters (IAP, analytics, etc.); `LL.Common.asmdef` is auto-referenced. There is no separate Infrastructure layer — reusable platform adapters live here alongside shared utilities.
 - **`Assets/_Project/Scripts/Core/`** — Business logic, use-cases, domain models; no Unity UI dependencies
 - **`Assets/_Project/Scripts/Presentation/`** — MonoBehaviours, Views, UI controllers
 - **`Assets/_Project/Scenes/`** — `Start.unity` (startup/loading), `Main.unity` (main game)

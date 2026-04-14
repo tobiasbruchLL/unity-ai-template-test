@@ -4,7 +4,7 @@ using R3;
 
 namespace LL.Core.Inventory
 {
-    public class Inventory
+    public class InventoryService
     {
         private readonly Dictionary<string, ReactiveProperty<BigDouble>> _amounts = new();
 

@@ -5,6 +5,7 @@ using VContainer.Unity;
 using UnityEngine.UIElements;
 using BreakInfinity;
 using LL.Common;
+using LL.Common.IAP;
 using LL.Core.Inventory;
 using LL.Core.Shop;
 
@@ -14,23 +15,13 @@ namespace LL.Presentation.Shop
     {
         private readonly ShopState           _state;
         private readonly ShopView            _view;
-        private readonly Inventory           _inventory;
+        private readonly InventoryService    _inventory;
         private readonly IIAPService         _iapService;
         private readonly CompositeDisposable _disposables = new();
 
-        // Product ID list aligned to BtnGemPacks indices
-        private static readonly string[] GemProductIds =
-        {
-            IAPProductIds.Gems100,
-            IAPProductIds.Gems500,
-            IAPProductIds.Gems1000,
-            IAPProductIds.Gems2500,
-            IAPProductIds.Gems5000,
-            IAPProductIds.Gems10000,
-        };
 
         [Inject]
-        public ShopPresenter(ShopState state, ShopView view, Inventory inventory, IIAPService iapService)
+        public ShopPresenter(ShopState state, ShopView view, InventoryService inventory, IIAPService iapService)
         {
             _state      = state;
             _view       = view;
@@ -40,8 +31,6 @@ namespace LL.Presentation.Shop
 
         public void Start()
         {
-            _iapService.Initialize();
-
             // ── Category tabs ─────────────────────────────────────────────────
             _view.BtnFeatured.OnClickedAsObservable()
                 .Subscribe(_ => _state.SelectedCategory.Value = ShopCategory.Featured).AddTo(_disposables);
@@ -55,9 +44,9 @@ namespace LL.Presentation.Shop
             _state.SelectedCategory.Subscribe(OnCategoryChanged).AddTo(_disposables);
 
             // ── Gem pack IAP buttons ──────────────────────────────────────────
-            for (var i = 0; i < GemProductIds.Length; i++)
+            for (var i = 0; i < IAPProductIds.AllIds.Length; i++)
             {
-                var productId = GemProductIds[i];
+                var productId = IAPProductIds.AllIds[i];
                 _view.BtnGemPacks[i].OnClickedAsObservable()
                     .Subscribe(_ => _iapService.BuyProduct(productId)).AddTo(_disposables);
             }
